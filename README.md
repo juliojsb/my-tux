@@ -25,6 +25,8 @@ In every script you will find a first section of description, usage and examples
 
 * **extension_changer.py:** change files extensions in a folder.
 
+* **file_sanitizer.py:** compress and remove files older than X days.
+
 * **filestrings_modifier.py:** modify text strings inside a file.
 
 * **gen_shadow_hash.py:** generate /etc/shadow hashes based on a given password.
@@ -35,7 +37,7 @@ In every script you will find a first section of description, usage and examples
 
 All the scripts have been tested in Debian, the distribution that I use as my main operating system.
 
-I will probably upload new scripts, so stay tuned! 
+I will probably upload new scripts, so stay tuned!
 
 ##License
 
