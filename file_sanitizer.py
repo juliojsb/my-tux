@@ -21,7 +21,7 @@ import time,os,gzip
 # =======================
 
 # Location of files to compress/delete
-folder = "/home/bob/sandbox/python/"
+folder = "/path/to/log/folder/"
 # Compress files older than specified
 compress_older_days = 5
 # Delete files older than specified
