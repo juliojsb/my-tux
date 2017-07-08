@@ -5,7 +5,7 @@ My Tux
 
 This is a repository of Bash and Python scripts that can be useful to sysadmins and end users of GNU/Linux systems.
 
-#### Scripts
+## Scripts
 
 In every script you will find a first section of description, usage and examples. Here is a brief summary of each one:
 
@@ -31,7 +31,11 @@ In every script you will find a first section of description, usage and examples
 
 * **gen_shadow_hash.py:** generate /etc/shadow hashes based on a given password.
 
+* **get_sites_http_status.py:** check HTTP status of a list of websites defined in file.
+
 * **linux_security_checks.sh:** check your Linux system with ClamAV, Lynis, Chkrootkit... and send the report in an email.
+
+* **mysql_info.sh:** retrieve basic information and statistics from MySQL server.
 
 * **ssh_paramiko_automate.py:** automate tasks in remote servers using paramiko.
 
@@ -39,6 +43,6 @@ All the scripts have been tested in Debian, the distribution that I use as my ma
 
 I will probably upload new scripts, so stay tuned!
 
-#### License
+## License
 
 All the code in this repository is licensed under GPLv3
