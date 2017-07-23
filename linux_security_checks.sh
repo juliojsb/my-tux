@@ -48,80 +48,80 @@ email_to="youraccount@example.com"
 #
 
 full_scan() {
-	# Update ClamAV signatures
-	freshclam > /dev/null
-	# Update Rkhunter signatures
-	$rkhunter_b --update > /dev/null
+    # Update ClamAV signatures
+    freshclam > /dev/null
+    # Update Rkhunter signatures
+    $rkhunter_b --update > /dev/null
 
-	# Begin the scan
-	echo "---------------${script_option} security scan in machine $(hostname)---------------" > $results_log
-	# ClamAV scan
-	echo -e "\n\n==========CLAMAV SCAN" >> $results_log
-	$clamscan_b -ri / --exclude-dir=/sys --exclude-dir=/proc $clamav_additional_options >> $results_log
-	# Current network connections
-	echo -e "\n\n==========CURRENT NETWORK CONNECTIONS" >> $results_log
-	netstat -netaup >> $results_log
-	# Lastlog (most recent logins)
-	echo -e "\n\n==========LASTLOG (MOST RECENT LOGINS)" >> $results_log
-	lastlog >> $results_log
-	# Last (last logged users)
-	echo -e "\n\n==========LAST (LAST LOGGED USERS)" >> $results_log
-	last >> $results_log
-	# Chkrootkit scan
-	echo -e "\n\n==========CHKROOTKIT SCAN" >> $results_log
-	$chkrootkit_b -q >> $results_log
-	# Rkhunter scan
-	echo -e "\n\n==========RKHUNTER SCAN" >> $results_log
-	$rkhunter_b --check --nocolors --skip-keypress --report-warnings-only >> $results_log
-	# Lynis scan
-	echo -e "\n\n==========LYNIS SCAN" >> $results_log
-	$lynis_b --cronjob --nolog >> $results_log
+    # Begin the scan
+    echo "---------------${script_option} security scan in machine $(hostname)---------------" > $results_log
+    # ClamAV scan
+    echo -e "\n\n==========CLAMAV SCAN" >> $results_log
+    $clamscan_b -ri / --exclude-dir=/sys --exclude-dir=/proc $clamav_additional_options >> $results_log
+    # Current network connections
+    echo -e "\n\n==========CURRENT NETWORK CONNECTIONS" >> $results_log
+    netstat -netaup >> $results_log
+    # Lastlog (most recent logins)
+    echo -e "\n\n==========LASTLOG (MOST RECENT LOGINS)" >> $results_log
+    lastlog >> $results_log
+    # Last (last logged users)
+    echo -e "\n\n==========LAST (LAST LOGGED USERS)" >> $results_log
+    last >> $results_log
+    # Chkrootkit scan
+    echo -e "\n\n==========CHKROOTKIT SCAN" >> $results_log
+    $chkrootkit_b -q >> $results_log
+    # Rkhunter scan
+    echo -e "\n\n==========RKHUNTER SCAN" >> $results_log
+    $rkhunter_b --check --nocolors --skip-keypress --report-warnings-only >> $results_log
+    # Lynis scan
+    echo -e "\n\n==========LYNIS SCAN" >> $results_log
+    $lynis_b --cronjob --nolog >> $results_log
 
-	# Finally send email notification with information
-	if [ $send_mail == "y" ];then
-		send_notification
-	fi
+    # Finally send email notification with information
+    if [ $send_mail == "y" ];then
+        send_notification
+    fi
 }
 
 partial_scan() {
-	# Update ClamAV signatures
-	freshclam > /dev/null
+    # Update ClamAV signatures
+    freshclam > /dev/null
 
-	# Scan system using ClamAV antivirus
-	echo "---------------${script_option} security scan in machine $(hostname)---------------" > $results_log
-	# ClamAV scan
-	echo -e "\n\n==========CLAMAV SCAN" >> $results_log
-	$clamscan_b -ri / --exclude-dir=/home --exclude-dir=/media --exclude-dir=/sys \
-	--exclude-dir=/proc $additional_options >> $results_log
-	# Current network connections
-	echo -e "\n\n==========CURRENT NETWORK CONNECTIONS" >> $results_log
-	netstat -netaup >> $results_log
-	# Lastlog (most recent logins)
-	echo -e "\n\n==========LASTLOG (MOST RECENT LOGINS)" >> $results_log
-	lastlog >> $results_log
-	# Last (last logged users)
-	echo -e "\n\n==========LAST (LAST LOGGED USERS)" >> $results_log
-	last >> $results_log
+    # Scan system using ClamAV antivirus
+    echo "---------------${script_option} security scan in machine $(hostname)---------------" > $results_log
+    # ClamAV scan
+    echo -e "\n\n==========CLAMAV SCAN" >> $results_log
+    $clamscan_b -ri / --exclude-dir=/home --exclude-dir=/media --exclude-dir=/sys \
+    --exclude-dir=/proc $additional_options >> $results_log
+    # Current network connections
+    echo -e "\n\n==========CURRENT NETWORK CONNECTIONS" >> $results_log
+    netstat -netaup >> $results_log
+    # Lastlog (most recent logins)
+    echo -e "\n\n==========LASTLOG (MOST RECENT LOGINS)" >> $results_log
+    lastlog >> $results_log
+    # Last (last logged users)
+    echo -e "\n\n==========LAST (LAST LOGGED USERS)" >> $results_log
+    last >> $results_log
 
-	# Finally send email notification with information
-	if [ $send_mail == "y" ];then
-		send_notification
-	fi
+    # Finally send email notification with information
+    if [ $send_mail == "y" ];then
+        send_notification
+    fi
 }
 
 send_notification() {
-	echo "${script_option} security scan in machine $(hostname)" | mail -s \
-	"Results of ${script_option} security scan in machine $(hostname)" $email_to < $results_log
+    echo "${script_option} security scan in machine $(hostname)" | mail -a "From:System Notification" -s \
+    "Results of ${script_option} security scan in machine $(hostname)" $email_to < $results_log
 }
 
 how_to_use() {
-	echo "----Some help for the usage of this script"
-	echo "To launch -> ./linux_security_checks.sh [ partial | full ]"
-	echo "Available options:"
-	echo "	partial   Perform a partial ClamAV scan of your system, excluding some directories."
-	echo "            No rootkit, vulnerabilities or hardening scan will be performed."
-	echo "	full      Perform a full scan of all your system with ClamAV, rkhunter, chkrootkit and lynis"
-	echo "            hardening analysis."
+    echo "----Some help for the usage of this script"
+    echo "To launch -> ./linux_security_checks.sh [ partial | full ]"
+    echo "Available options:"
+    echo "  partial   Perform a partial ClamAV scan of your system, excluding some directories."
+    echo "            No rootkit, vulnerabilities or hardening scan will be performed."
+    echo "  full      Perform a full scan of all your system with ClamAV, rkhunter, chkrootkit and lynis"
+    echo "            hardening analysis."
 }
 
 #
@@ -129,14 +129,14 @@ how_to_use() {
 #
 
 if [ $# -lt 1 ];then
-	echo "Wrong syntax, please check usage"
-	how_to_use
-	exit 1
+    echo "Wrong syntax, please check usage"
+    how_to_use
+    exit 1
 else
-	case $script_option in
-		full )	full_scan ;;
-		partial )	partial_scan ;;
-		* )	echo "Wrong syntax, please check usage"
-			how_to_use
-			exit 1
-			;;
+    case $script_option in
+        full )  full_scan ;;
+        partial )   partial_scan ;;
+        * ) echo "Wrong syntax, please check usage"
+            how_to_use
+            exit 1
+            ;;
