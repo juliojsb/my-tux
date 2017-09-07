@@ -33,6 +33,8 @@ In every script you will find a first section of description, usage and examples
 
 * **get_sites_http_status.py:** check HTTP status of a list of websites defined in file.
 
+* **iptables_for_desktops.sh:** common iptables rules for Linux desktops.
+
 * **linux_security_checks.sh:** check your Linux system with ClamAV, Lynis, Chkrootkit... and send the report in an email.
 
 * **mysql_info.sh:** retrieve basic information and statistics from MySQL server.
