@@ -33,6 +33,10 @@ In every script you will find a first section of description, usage and examples
 
 * **get_sites_http_status.py:** check HTTP status of a list of websites defined in file.
 
+* **iptables_allowall.sh:** allow all communications (iptables off).
+
+* **iptables_denyall.sh:** deny all communications (only loopback allowed).
+
 * **iptables_for_desktops.sh:** common iptables rules for Linux desktops.
 
 * **linux_security_checks.sh:** check your Linux system with ClamAV, Lynis, Chkrootkit... and send the report in an email.
