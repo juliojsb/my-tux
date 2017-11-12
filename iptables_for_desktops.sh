@@ -44,8 +44,8 @@ ip6tables -P OUTPUT DROP
 ip6tables -P FORWARD DROP
 
 # Loopback communications
-iptables -A INPUT -s 127.0.0.1 -i lo -j ACCEPT
-iptables -A OUTPUT -d 127.0.0.1 -o lo -j ACCEPT
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
 
 # Connections from/to LAN hosts
 iptables -A OUTPUT -d "$lan_segment" -j ACCEPT
