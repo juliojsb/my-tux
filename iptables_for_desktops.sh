@@ -52,7 +52,7 @@ iptables -A OUTPUT -d "$lan_segment" -j ACCEPT
 iptables -A INPUT -s "$lan_segment" -j ACCEPT
 
 # DNS lookups
-for dns_server in "$dns_servers"
+for dns_server in ${dns_servers}
 do
     iptables -A OUTPUT -p udp -d "$dns_server" --sport 1024:65535 --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 done
