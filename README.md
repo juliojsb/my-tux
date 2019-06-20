@@ -45,6 +45,8 @@ In every script you will find a first section of description, usage and examples
 
 * **ssh_paramiko_automate.py:** automate tasks in remote servers using paramiko.
 
+* **influxdb_backup.sh:** Create backup of a list of InfluxDB databases.
+
 All the scripts have been tested in Debian, the distribution that I use as my main operating system.
 
 I will probably upload new scripts, so stay tuned!
