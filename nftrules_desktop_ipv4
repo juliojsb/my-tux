@@ -1,0 +1,106 @@
+#!/usr/sbin/nft -f
+#
+# Author        :Julio Sanz
+# Website       :www.elarraydejota.com
+# Email         :juliojosesb@gmail.com
+# Description   :nftables desktop ruleset for IPv4 network traffic
+# Dependencies  :nftables
+# License       :GPLv3
+#
+
+
+#
+# VARIABLES
+#
+
+define lan_segment = 192.168.1.0/24
+define dns_servers = { 208.67.222.222, 208.67.220.220 }
+
+
+#
+# MAIN
+#
+
+flush ruleset
+
+
+# IPv4
+table ip filter {
+    chain INPUT {
+        # Filter definition and Default Policy
+        type filter hook input priority 0; policy drop;
+
+        # Drop invalid connections
+        ct state invalid drop
+
+        # Allow loopback
+        iifname lo accept
+
+        # Accept established connections
+        ct state { established,related } accept
+
+        # Allow Steam
+        udp dport 27015 accept
+        tcp dport 27015 accept
+        udp dport { 27031, 27036 } accept
+        tcp dport { 27036, 27037 } accept
+
+        # Allow LAN traffic
+        ip saddr $lan_segment accept
+
+        log prefix "nftables-INPUT-Dropped: "
+    }
+
+    chain FORWARD {
+        # Filter definition and Default Policy
+        type filter hook forward priority 0; policy drop;
+
+        log prefix "nftables-FORWARD-Dropped: "
+    }
+
+    chain OUTPUT {
+        # Filter definition and Default Policy
+        type filter hook output priority 0; policy drop;
+
+        # Allow loopback
+        oifname lo accept
+
+        # DNS
+        ip daddr $dns_servers tcp dport 53 accept
+        ip daddr $dns_servers udp dport 53 accept
+
+        # SSH
+        tcp dport 22 accept
+
+        # HTTP, HTTPS
+        tcp sport 1024-65535 tcp dport { 80, 443 } accept
+
+        # SMTP
+        tcp dport 587 accept
+
+        # Steam
+        udp dport 27000-27100 accept
+        udp dport { 3478, 4379, 4380 } accept
+
+        # LAN traffic
+        ip daddr $lan_segment accept
+
+        log prefix "nftables-OUTPUT-Dropped: "
+    }
+}
+
+
+# IPv6
+table ip6 filter {
+    chain INPUT {
+        type filter hook input priority 0; policy drop;
+    }
+
+    chain FORWARD {
+        type filter hook forward priority 0; policy drop;
+    }
+
+    chain OUTPUT {
+        type filter hook output priority 0; policy drop;
+    }
+}

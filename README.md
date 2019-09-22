@@ -47,6 +47,10 @@ In every script you will find a first section of description, usage and examples
 
 * **influxdb_backup.sh:** Create backup of a list of InfluxDB databases.
 
+* **nftrules_desktop_ipv4.sh:** nftables desktop ruleset for IPv4 network traffic.
+
+* **nftrules_server_ipv4.sh:** nftables server ruleset for IPv4 network traffic.
+
 All the scripts have been tested in Debian, the distribution that I use as my main operating system.
 
 I will probably upload new scripts, so stay tuned!

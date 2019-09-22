@@ -1,0 +1,91 @@
+#!/usr/sbin/nft -f
+#
+# Author        :Julio Sanz
+# Website       :www.elarraydejota.com
+# Email         :juliojosesb@gmail.com
+# Description   :nftables server ruleset for IPv4 network traffic
+# Dependencies  :nftables
+# License       :GPLv3
+#
+
+
+#
+# VARIABLES
+#
+
+define dns_servers = { 0.0.0.0, 8.8.8.8 }
+define mail_server = "mail.example.com"
+admin_servers = { 192.168.1., 192.168.2.2 }
+
+
+#
+# MAIN
+#
+
+flush ruleset
+
+
+# IPv4
+table ip filter {
+    chain INPUT {
+        # Filter definition and Default Policy
+        type filter hook input priority 0; policy drop;
+
+        # Drop invalid connections
+        ct state invalid drop
+
+        # Allow loopback
+        iifname lo accept
+
+        # Allow HTTP and HTTPS
+        tcp dport { 80, 443 } accept
+
+        # Allow SSH from Admin servers
+        ip saddr $admin_servers tcp dport 22 accept
+
+        log prefix "nftables-INPUT-Dropped: "
+    }
+
+    chain FORWARD {
+        # Filter definition and Default Policy
+        type filter hook forward priority 0; policy drop;
+
+        log prefix "nftables-FORWARD-Dropped: "
+    }
+
+    chain OUTPUT {
+        # Filter definition and Default Policy
+        type filter hook output priority 0; policy drop;
+
+        # Accept loopback
+        oifname lo accept
+
+        # Accept established connections
+        ct state { established,related } accept
+
+        # DNS
+        ip daddr $dns_servers tcp dport 53 accept
+        ip daddr $dns_servers udp dport 53 accept
+
+        # Allow SMTP
+        ip daddr $mail_server tcp dport 587 accept
+
+        log prefix "nftables-OUTPUT-Dropped: "
+    }
+}
+
+
+# IPv6
+table ip6 filter {
+    chain INPUT {
+        type filter hook input priority 0; policy drop;
+    }
+
+    chain FORWARD {
+        type filter hook forward priority 0; policy drop;
+    }
+
+    chain OUTPUT {
+        type filter hook output priority 0; policy drop;
+    }
+}
